@@ -1,0 +1,9 @@
+クライアント管理　不明点
+
+handleMessage()の仕様が不明。
+メッセージを受け取るためのloopメソッドがない。
+signUpに dbManager.searchUserの仕様確認。
+matchPrivateのpasswordの必要性。
+ランダムロビーのIDの決め方が不明。
+startGameとcastChatの仕様が不明。
+signOutメソッドを追加。
