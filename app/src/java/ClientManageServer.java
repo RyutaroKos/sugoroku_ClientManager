@@ -173,11 +173,11 @@ class ClientManageServer
 	    int random_num = 0;//ランダムロビーの数
 	    for(int i = 0; i < lobbys.size(); i++)
         {
-            if(lobbys.get(i).checkRandom()==true&&lobbys.get(i).getUserNum()<4)
+            if(lobbys.get(i).isRandomLobby()==true&&lobbys.get(i).getUserNum()<4)
             {
                 return lobbys.get(i);
             }
-            else if(lobbys.get(i).checkRandom()==true&&lobbys.get(i).getUserNum()==4)
+            else if(lobbys.get(i).isRandomLobby()==true&&lobbys.get(i).getUserNum()==4)
             {
                 random_num++;
             }

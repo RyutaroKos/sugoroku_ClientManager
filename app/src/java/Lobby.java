@@ -77,7 +77,7 @@ class Lobby
 		return this.lobbyPassword;
 	}
 
-	public boolean checkRandom()//追加
+	public boolean isRandomLobby()
 	{
 	    return isRandom;
 	}
