@@ -35,23 +35,23 @@ class ClientManageServer
 
 	public void signIn(String userID, String pwd)
 	{
-		boolean isExistUser = dbManager.searchUser(userID, pwd);//登録チェック
-		if(isExistUser)//登録されている場合
+		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//登録チェック
+		if(isRegisteredUser)//登録されている場合
         {
-            if(/*signIn check*/)
+            if(this.isSignedInUser(userID))
             {
                 //既にsignIn中、失敗メッセージを返す
             }
             else//signIn処理を行う
             {
-                User user = new User();//
+                User user = new User();
                 this.users.add(user);
                 comManager.sendMessage();//str
             }
         }
         else
         {
-            // 登録されていない　失敗メッセージ
+            // 登録されていない 失敗メッセージ
         }
 
 	}
@@ -64,9 +64,9 @@ class ClientManageServer
 	 */
 	public void signUp(String userID, String pwd)
 	{
-		boolean isExistUser = dbManager.searchUser(userID, pwd);//signUpで成功失敗の判定でもいいのでは
+		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//signUpで成功失敗の判定でもいいのでは
 
-		if(isExistUser)
+		if(isRegisteredUser)
 		{
             //失敗メッセージを返す。
 		}
@@ -87,9 +87,9 @@ class ClientManageServer
 	public void matchPrivate(String userID,String lobbyID)
 	{
         Lobby lobby = searchLobby(String lobbyID);
-        if(lobby==null)
+        if(lobby == null)
         {
-            lobby =new Lobby(lobbyID, null, false);//pwd??
+            lobby = new Lobby(lobbyID, null, false);//pwd??
         }
         user.setStatus(2);
         match(lobby,userID);
@@ -105,7 +105,7 @@ class ClientManageServer
 		String sockID;
 		for(int num = 0; num < lobbyUsers.size(); num++)
 		{
-			sockID = lobbyUser.getWebSocketID(num);
+			sockID = lobbyUsers.get(num).getWebSocketID();
 			//msgはどうするか
 		}
 	}
@@ -157,8 +157,8 @@ class ClientManageServer
 
 	public Lobby decideRandomLobby()
 	{
-	    int random_num=0;//ランダムロビーの数
-	    for(int i=0;i<lobbys.size();i++)
+	    int random_num = 0;//ランダムロビーの数
+	    for(int i = 0; i < lobbys.size(); i++)
         {
             if(lobbys.get(i).checkRandom()==true&&lobbys.get(i).getUserNum()<4)
             {
@@ -186,6 +186,19 @@ class ClientManageServer
 
 	public void castChat(String chat)
 	{
+	}
+
+	private boolean isSignedInUser(String userID)
+	{
+		User user = this.searchUser(userID);
+		if(user == null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	private User searchUser(String userID)
