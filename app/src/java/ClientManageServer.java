@@ -77,6 +77,19 @@ class ClientManageServer
 		}
 	}
 
+	public void signOut(String userID)
+	{
+		String id;
+		for(int num = 0; num < this.users.size(); num++)
+		{
+			id = this.users.get(num).getUserName();
+			if(userID.equals(id))
+			{
+				this.users.remove(num);
+			}
+		}
+	}
+
 	public void matchRandom(String userID)
 	{
 		Lobby lobby = this.decideRandomLobby();
