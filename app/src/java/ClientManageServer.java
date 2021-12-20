@@ -170,25 +170,28 @@ class ClientManageServer
 
 	public Lobby decideRandomLobby()
 	{
-	    int random_num = 0;//ランダムロビーの数
-	    for(int i = 0; i < lobbys.size(); i++)
-        {
-            if(lobbys.get(i).isRandomLobby()==true&&lobbys.get(i).getUserNum()<4)
-            {
-                return lobbys.get(i);
-            }
-            else if(lobbys.get(i).isRandomLobby()==true&&lobbys.get(i).getUserNum()==4)
-            {
-                random_num++;
-            }
-        }
-        //id 変更点
-        return createLobby(0000+random_num,true);//ロビーID微妙
-        //
-		//randomLobbyを探す
-		//空きがあったら返す
-		//空きが無かったらcreate
-		//
+	    Lobby lobby;
+	    String randLobbyID;
+
+	    for(int i = 0; i < 10000; i++)
+	    {
+	    	randLobbyID = String.format("%05d", i);
+	    	lobby = this.searchLobby(randLobbyID);
+
+	    	if(lobby == null)
+	    	{
+	    		return createLobby(randLobbyID, true);
+	    	}
+	    	else
+	    	{
+	            if(lobby.isRandomLobby() && lobby.getUserNum() < 4)
+	            {
+	            	return lobby;
+	            }
+	    	}
+	    }
+
+	    //ランダムロビー数上限に到達
 	}
 
 	public void startGame(String str)
