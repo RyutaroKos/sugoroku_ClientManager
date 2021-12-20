@@ -99,7 +99,7 @@ class ClientManageServer
 
 	public void matchPrivate(String userID,String lobbyID)
 	{
-        Lobby lobby = searchLobby(String lobbyID);
+        Lobby lobby = searchLobby(lobbyID);
         if(lobby == null)
         {
             lobby = new Lobby(lobbyID, null, false);//pwd??
