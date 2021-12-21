@@ -82,7 +82,7 @@ class ClientManageServer
 		String id;
 		for(int num = 0; num < this.users.size(); num++)
 		{
-			id = this.users.get(num).getUserName();
+			id = this.users.get(num).getName();
 			if(userID.equals(id))
 			{
 				this.users.remove(num);
