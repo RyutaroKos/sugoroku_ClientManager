@@ -200,8 +200,19 @@ class ClientManageServer
 		//開始時にステータスを変更
 	}
 
-	public void castChat(String chat)
+	public void castChat(String userID, String chat)
 	{
+		User user = this.searchUser(userID);
+		String lobbyID = user.getLobbyID();
+		Lobby lobby = this.searchLobby(lobbyID);
+		AllayList<User> lobbyUsers = lobby.getUserList();
+
+		String sockID;
+		for(int num = 0; num < lobbyUsers.size(); num++)
+		{
+			sockID = lobbyUsers.get(num).getWebSocketID();
+			//msgはどうするか
+		}
 	}
 
 	private boolean isSignedInUser(String userID)
