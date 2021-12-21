@@ -93,25 +93,27 @@ class ClientManageServer
 	public void matchRandom(String userID)
 	{
 		Lobby lobby = this.decideRandomLobby();
+		User user = this.searchUser(userID);
         user.setStatus(1);
-        match(lobby,userID);
+        match(lobby, user);
 	}
 
-	public void matchPrivate(String userID,String lobbyID)
+	public void matchPrivate(String userID, String lobbyID)
 	{
         Lobby lobby = searchLobby(lobbyID);
         if(lobby == null)
         {
             lobby = new Lobby(lobbyID, null, false);//pwd??
         }
+        User user = this.searchUser(userID);
         user.setStatus(2);
-        match(lobby,userID);
+        match(lobby, user);
 	}
 
-    public void match(Lobby lobby,String userID)//コードの再利用
+    public void match(Lobby lobby, User user)//コードの再利用
 	{
+    	String userID = user.getName();
 	    lobby.addUser(userID);
-		User user = this.searchUser(userID);
 		user.setLobbyID(lobby.getLobbyID());
 
 		ArrayList<User> lobbyUsers = lobby.getUserList();
