@@ -10,14 +10,14 @@ class Lobby
 	private String lobbyID;
 	private boolean isRandom;
 	private ArrayList<boolean> readyList;
-	private String lobbyPassword;
+	private String lobbyPassword; //これいる?
 
 
-	public Lobby(String id, String pass, boolean patternFlag)//private or random
+	public Lobby(String id, String pass, boolean randomFlag)//private or random
 	{
 		this.users = new ArrayList<>();
     	this.lobbyID = id;
-    	this.isRandom = patternFlag;
+    	this.isRandom = randomFlag;
 		this.readyList = new ArrayList<>();
 		this.lobbyPassword = pass;
 	}
@@ -33,12 +33,16 @@ class Lobby
 	}
 
 	public int getUserNum(String userid)
+	/**
+	*該当するユーザIDを持つユーザのインデックスを返す
+	*@param userid ユーザID
+	*/
 	{
 		int upos;
 		String idtmp;
 
 		for(upos = 0; upos < this.getUserNum(); upos++)
-    	{
+    {
 			idtmp = this.users.get(upos).getName();
 			if(idtmp.equals(userid))
 			{
@@ -63,6 +67,7 @@ class Lobby
 	public void addUser(String userID)
 	{
 		this.users.add(user);
+		this.readyList.add(false);
 	}
 
 	public void deleteUser(String userid)
@@ -70,6 +75,7 @@ class Lobby
 		int pos = this.getUserNum(userid);
 		this.users.get(pos).exitLobby();
 		this.users.remove(pos);
+		this.readyList.remove(pos);
 	}
 
 	public String getPassword()
