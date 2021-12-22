@@ -91,15 +91,23 @@ class ClientManageServer
 	 */
 	public void signOut(String userID)
 	{
-		String id;
+		User user;
 		for(int num = 0; num < this.users.size(); num++)
 		{
-			id = this.users.get(num).getName();
-			if(userID.equals(id))
+			user = this.users.get(num);
+			if(userID.equals(user.get.getName()))
 			{
-				this.users.remove(num);//sign out
-				//userがロビー内signOutをする場合の処理を追加？（通信が切れたなど）
-				break;
+			    switch(user.getStatus())
+			    {
+                case 1:
+                case 2:
+                    exitLobby(user.get.getName());
+                case 3:
+                    //? gaming
+                default: //0
+                    this.users.remove(num);//sign out
+			    }
+			    break;
 			}
 		}
 	}
@@ -201,7 +209,7 @@ class ClientManageServer
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
 
-		lobby.deleteUser(userID);
+		lobby.deleteUser(userID);//user ready状態の変更？
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
