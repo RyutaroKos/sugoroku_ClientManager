@@ -27,22 +27,22 @@ class Lobby
 		return this.lobbyID;
 	}
 
-	public int getUserNum()
+	public int getTotalUserNum()// ロビー内のユーザ数を取得
 	{
 		return this.users.size();
 	}
 
 	public int getUserNum(String userid)
 	/**
-	*該当するユーザIDを持つユーザのインデックスを返す
+	*該当するユーザIDを持つユーザのインデックスを返す //? int ?
 	*@param userid ユーザID
 	*/
 	{
 		int upos;
 		String idtmp;
 
-		for(upos = 0; upos < this.getUserNum(); upos++)
-    {
+		for(upos = 0; upos < this.getTotalUserNum(); upos++)
+        {
 			idtmp = this.users.get(upos).getName();
 			if(idtmp.equals(userid))
 			{
@@ -55,7 +55,7 @@ class Lobby
 
 	public ArrayList<User> getUserList()
 	{
-		return this.users;isRandom
+		return this.users;
 	}
 
 	public void setReady(String userid)

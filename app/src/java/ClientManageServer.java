@@ -192,7 +192,7 @@ class ClientManageServer
 		}
 
 		lobby.deleteUser(userID);
-		if(lobby.getUserNum() == 0)
+		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
 		}
@@ -220,7 +220,7 @@ class ClientManageServer
 	    	}
 	    	else
 	    	{
-	            if(lobby.isRandomLobby() && lobby.getUserNum() < 4)
+	            if(lobby.isRandomLobby() && lobby.getTotalUserNum() < 4)
 	            {
 	            	return lobby;
 	            }
