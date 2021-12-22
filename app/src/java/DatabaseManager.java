@@ -30,6 +30,7 @@ class DatabaseManager
 
     }
 
+    
     String comformRank(String ID)
     {
 
