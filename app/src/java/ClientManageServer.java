@@ -112,8 +112,7 @@ class ClientManageServer
 
     public void match(Lobby lobby, User user)//コードの再利用
 	{
-    	String userID = user.getName();
-	    lobby.addUser(userID);
+	    lobby.addUser(user);
 		user.setLobbyID(lobby.getLobbyID());
 
 		ArrayList<User> lobbyUsers = lobby.getUserList();
