@@ -64,7 +64,7 @@ class Lobby
 		this.readyList.set(pos,true);
 	}
 
-	public void addUser(String userID)
+	public void addUser(User user)
 	{
 		this.users.add(user);
 		this.readyList.add(false);
