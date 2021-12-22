@@ -33,6 +33,12 @@ class ClientManageServer
 		}
 	}
 
+	/**
+	 * サインインをするメソッド
+	 * @author fumofumo3
+	 * @param userID ユーザID
+	 * @param pwd パスワード
+	 */
 	public void signIn(String userID, String pwd)
 	{
 		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//登録チェック
@@ -57,8 +63,8 @@ class ClientManageServer
 	}
 
 	/**
-	 *WIP サインアップをするメソッド
-	 * @author fumofumo3
+	 * サインアップをするメソッド
+	 *
 	 * @param userID ユーザID
 	 * @param pwd パスワード
 	 */
@@ -77,6 +83,12 @@ class ClientManageServer
 		}
 	}
 
+	/**
+	 * サインアウトをするメソッド
+	 * @author fumofumo3
+	 * @param userID ユーザID
+	 * @param pwd パスワード
+	 */
 	public void signOut(String userID)
 	{
 		String id;
@@ -90,6 +102,10 @@ class ClientManageServer
 		}
 	}
 
+	/**
+	 * ランダムでマッチングをするメソッド
+	 * @param userID ユーザID
+	 */
 	public void matchRandom(String userID)
 	{
 		Lobby lobby = this.decideRandomLobby();
@@ -98,6 +114,11 @@ class ClientManageServer
         match(lobby, user);
 	}
 
+	/**
+	 * プライベートでマッチングをするメソッド
+	 * @param userID ユーザID
+	 * @param lobbyID ロビーID
+	 */
 	public void matchPrivate(String userID, String lobbyID)
 	{
         Lobby lobby = searchLobby(lobbyID);
@@ -110,6 +131,11 @@ class ClientManageServer
         match(lobby, user);
 	}
 
+	/**
+	 * マッチングをするメソッド
+	 * @param lobby ロビーのインスタンス
+	 * @param user ユーザのインスタンス
+	 */
     public void match(Lobby lobby, User user)//コードの再利用
 	{
 	    lobby.addUser(user);
@@ -145,6 +171,11 @@ class ClientManageServer
 		return new Lobby(lobbyID, pass, isRandom);//passいらないのでは
 	}
 
+	/**
+	 * ロビーを退出するメソッド
+	 * @param userID ユーザID
+	 * @return boolean
+	 * */
 	public boolean exitLobby(String userID)
 	{
 		User user = this.searchUser(userID);
@@ -169,6 +200,10 @@ class ClientManageServer
 		return true;
 	}
 
+	/**
+	 * ランダムマッチ用のロビーを作成するメソッド
+	 * @return lobby
+	 */
 	public Lobby decideRandomLobby()
 	{
 	    Lobby lobby;
@@ -201,6 +236,11 @@ class ClientManageServer
 		//開始時にステータスを変更
 	}
 
+	/**
+	 * ユーザが所属するロビーにチャットを送るメソッド
+	 * @param userID ユーザID
+	 * @param chat チャット
+	 */
 	public void castChat(String userID, String chat)
 	{
 		User user = this.searchUser(userID);
