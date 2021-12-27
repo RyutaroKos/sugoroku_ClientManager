@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import org.json.JSONObject;
 
 /**
  *クライアントを管理するクラス
@@ -26,8 +27,31 @@ class ClientManageServer
 	 */
 	public void handleMessage()
 	{
-		switch(msg)
+		JSONObject jsonObj;
+		String request;
+
+		jsonObj = comManager.deq();
+		request = jsonObj.getString("Request");
+		switch(request)
 		{
+			case "LOGIN":
+				break;
+			case "SIGNUP";
+				break;
+			case "RANDOM_MATCH";
+				break;
+			case "PRIVATE_MATCH";
+					break;
+			case "CHECK_RECORD";
+				break;
+			case "EXIT_LOBBY";
+					break;
+			case "SEND_CHAT";
+				break;
+			case "START_GAME";
+				break;
+			case "MAKE_GAME";
+				break;
 			default:
 				break;
 		}
