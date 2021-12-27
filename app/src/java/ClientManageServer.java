@@ -43,12 +43,12 @@ class ClientManageServer
 		switch(request)
 		{
 			case "LOGIN":
-				userID = jsonObj.getString("Username");
+				String userID = jsonObj.getString("Username");
 				String pwd = jsonObj.getString("Password");
 				this.signIn(userID, pwd);
 				break;
 			case "SIGNUP":
-				userID = jsonObj.getString("Username");
+				String userID = jsonObj.getString("Username");
 				String pwd = jsonObj.getString("Password");
 				this.signUp(userID, pwd);
 				break;
