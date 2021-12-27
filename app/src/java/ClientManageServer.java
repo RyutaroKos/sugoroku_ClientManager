@@ -28,32 +28,53 @@ class ClientManageServer
 	public void handleMessage()
 	{
 		Message msg;
+		Session session;
 		JSONObject jsonObj;
 		String request;
+		String userID;
 
 
 		msg = comManager.deq();
+		session = msg.getSession();
 		jsonObj = msg.getData();
+
+		userID = this.searchSessionUserID(session.getID());
 		request = jsonObj.getString("Request");
 		switch(request)
 		{
 			case "LOGIN":
+				String userID = jsonObj.getString("Username");
+				String pwd = jsonObj.getString("Password");
+				this.signIn(userID, pwd);
 				break;
 			case "SIGNUP":
+				String userID = jsonObj.getString("Username");
+				String pwd = jsonObj.getString("Password");
+				this.signUp(userID, pwd);
 				break;
 			case "RANDOM_MATCH":
+				this.matchRandom(userID);
 				break;
 			case "PRIVATE_MATCH":
+				String lobbyID = jsonObj.getString("LobbyID");
+				this.matchPrivate(userID, pwd);
 				break;
 			case "CHECK_RECORD":
+
 				break;
 			case "EXIT_LOBBY":
+				this.exitLobby(userID);
 				break;
 			case "SEND_CHAT":
+				String chat = jsonObj.getString("Message");
+				this.castChat(userID, chat);
 				break;
 			case "START_GAME":
+				this.prepareGame(userID);
 				break;
 			case "MAKE_GAME":
+				String lobbyID = jsonObj.getString("LobbyID");
+				this.startGame(lobbyID);
 				break;
 			default:
 				break;
@@ -338,4 +359,18 @@ class ClientManageServer
 		}
 	}
 
+	private String searchSessionUserID(String sockID)
+	{
+		String id;
+		for(User user : this.users)
+		{
+			id = user.getWebSocketID();
+			if(id.equals(sockID))
+			{
+				return user.getName();
+			}
+		}
+
+		return null;
+	}
 }
