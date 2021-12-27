@@ -15,7 +15,7 @@ class ClientManageServer
 
 	public ClientManageServer()
 	{
-		this.users = new ArrayList<User>();
+		this.users = new ArrayList<User>();　//sign in 管理用のユーザリスト
 		this.lobbys = new ArrayList<Lobby>();
 		this.dbManager = new DatabaseManager();
 		this.comManager = new ComManager();
@@ -99,7 +99,7 @@ class ClientManageServer
             else//signIn処理を行う
             {
                 User user = new User();
-                this.users.add(user);
+                this.users.add(user);//sign in
                 comManager.sendMessage();//str
             }
         }
@@ -139,13 +139,23 @@ class ClientManageServer
 	 */
 	public void signOut(String userID)
 	{
-		String id;
+		User user;
 		for(int num = 0; num < this.users.size(); num++)
 		{
-			id = this.users.get(num).getName();
-			if(userID.equals(id))
+			user = this.users.get(num);
+			if(userID.equals(user.get.getName()))
 			{
-				this.users.remove(num);
+			    switch(user.getStatus())
+			    {
+                case 1:
+                case 2:
+                    exitLobby(user.get.getName());
+                case 3:
+                    //? gaming
+                default: //0
+                    this.users.remove(num);//sign out
+			    }
+			    break;
 			}
 		}
 	}
@@ -227,19 +237,27 @@ class ClientManageServer
 	public boolean exitLobby(String userID)
 	{
 		User user = this.searchUser(userID);
+		//必要性確認　ロビー内にいるユーザにしかこのメソッドを呼び出せない
 		if(user == null)
 		{
 			return false;
 		}
+        //
 
 		String lobbyID = user.getLobbyID();
 		Lobby lobby = this.searchLobby(lobbyID);
+		//必要性確認　ロビーが存在している場合にしかこのメソッドを呼び出せない
 		if(lobby == null)
 		{
 			return false;
 		}
+        //
 
-		lobby.deleteUser(userID);
+        //
+        //通信を行い、失敗した場合がfalseを返すのがどう？
+        //
+
+		lobby.deleteUser(userID);//user ready状態の変更？
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
@@ -282,6 +300,21 @@ class ClientManageServer
 	{
 
 		//開始時にステータスを変更
+		/*
+		User user;
+		for(int num = 0; num < this.users.size(); num++)
+		{
+			user = this.users.get(num);
+			if(user.getStatus==1||2)\
+            {
+                user.setStatus(3);
+            }
+			else
+            {
+                //error処理
+            }
+		}
+		*/
 	}
 
 	/**
