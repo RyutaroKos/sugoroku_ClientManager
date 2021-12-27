@@ -27,10 +27,13 @@ class ClientManageServer
 	 */
 	public void handleMessage()
 	{
+		Message msg;
 		JSONObject jsonObj;
 		String request;
 
-		jsonObj = comManager.deq();
+
+		msg = comManager.deq();
+		jsonObj = msg.getData();
 		request = jsonObj.getString("Request");
 		switch(request)
 		{
