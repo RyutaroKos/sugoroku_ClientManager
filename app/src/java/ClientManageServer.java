@@ -143,7 +143,7 @@ class ClientManageServer
 		for(int num = 0; num < this.users.size(); num++)
 		{
 			user = this.users.get(num);
-			if(userID.equals(user.get.getName()))
+			if(userID.equals(user.getName()))
 			{
 			    switch(user.getStatus())
 			    {
@@ -237,27 +237,14 @@ class ClientManageServer
 	public boolean exitLobby(String userID)
 	{
 		User user = this.searchUser(userID);
-		//必要性確認　ロビー内にいるユーザにしかこのメソッドを呼び出せない
-		if(user == null)
-		{
-			return false;
-		}
-        //
-
 		String lobbyID = user.getLobbyID();
 		Lobby lobby = this.searchLobby(lobbyID);
-		//必要性確認　ロビーが存在している場合にしかこのメソッドを呼び出せない
-		if(lobby == null)
-		{
-			return false;
-		}
-        //
-
         //
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
 
 		lobby.deleteUser(userID);//user ready状態の変更？
+		user.setStatus(0);
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
