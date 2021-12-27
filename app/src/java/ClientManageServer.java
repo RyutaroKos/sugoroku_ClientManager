@@ -39,21 +39,21 @@ class ClientManageServer
 		{
 			case "LOGIN":
 				break;
-			case "SIGNUP";
+			case "SIGNUP":
 				break;
-			case "RANDOM_MATCH";
+			case "RANDOM_MATCH":
 				break;
-			case "PRIVATE_MATCH";
-					break;
-			case "CHECK_RECORD";
+			case "PRIVATE_MATCH":
 				break;
-			case "EXIT_LOBBY";
-					break;
-			case "SEND_CHAT";
+			case "CHECK_RECORD":
 				break;
-			case "START_GAME";
+			case "EXIT_LOBBY":
 				break;
-			case "MAKE_GAME";
+			case "SEND_CHAT":
+				break;
+			case "START_GAME":
+				break;
+			case "MAKE_GAME":
 				break;
 			default:
 				break;
