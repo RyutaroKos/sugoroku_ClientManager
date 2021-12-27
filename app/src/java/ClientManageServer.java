@@ -57,7 +57,7 @@ class ClientManageServer
 				break;
 			case "PRIVATE_MATCH":
 				String lobbyID = jsonObj.getString("LobbyID");
-				this.matchPrivate(userID, pwd);
+				this.matchPrivate(userID, lobbyID);
 				break;
 			case "CHECK_RECORD":
 
