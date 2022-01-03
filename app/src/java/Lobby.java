@@ -9,7 +9,7 @@ class Lobby
 	private ArrayList<User> users;
 	private String lobbyID;
 	private boolean isRandom;
-	private ArrayList<boolean> readyList;
+	private ArrayList<Boolean> readyList;
 	private String lobbyPassword; //これいる?
 
 
