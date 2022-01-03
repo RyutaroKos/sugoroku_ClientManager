@@ -23,7 +23,7 @@ class User
     {
         this.userName = userName;
         this.session = session;
-        this.status = outLobby;
+        this.status = 0;
         this.lobbyID = null;
     }
 
@@ -72,7 +72,7 @@ class User
 
     public void exitLobby()
     {
-        setStatus(outLobby);
+        setStatus(0);
         setLobbyID(null);
     }
 };
