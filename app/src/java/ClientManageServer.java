@@ -40,23 +40,26 @@ class ClientManageServer
 
 		userID = this.searchSessionUserID(session.getID());
 		request = jsonObj.getString("Request");
+
+		String pwd;
+		String lobbyID;
 		switch(request)
 		{
 			case "LOGIN":
-				String userID = jsonObj.getString("Username");
-				String pwd = jsonObj.getString("Password");
+				userID = jsonObj.getString("Username");
+				pwd = jsonObj.getString("Password");
 				this.signIn(userID, pwd);
 				break;
 			case "SIGNUP":
-				String userID = jsonObj.getString("Username");
-				String pwd = jsonObj.getString("Password");
+				userID = jsonObj.getString("Username");
+				pwd = jsonObj.getString("Password");
 				this.signUp(userID, pwd);
 				break;
 			case "RANDOM_MATCH":
 				this.matchRandom(userID);
 				break;
 			case "PRIVATE_MATCH":
-				String lobbyID = jsonObj.getString("LobbyID");
+				lobbyID = jsonObj.getString("LobbyID");
 				this.matchPrivate(userID, lobbyID);
 				break;
 			case "CHECK_RECORD":
@@ -73,7 +76,7 @@ class ClientManageServer
 				this.prepareGame(userID);
 				break;
 			case "MAKE_GAME":
-				String lobbyID = jsonObj.getString("LobbyID");
+				lobbyID = jsonObj.getString("LobbyID");
 				this.startGame(lobbyID);
 				break;
 			default:
@@ -223,12 +226,6 @@ class ClientManageServer
 		return false;
 	}
 
-	//保留、必要性は要確認
-	public Lobby createLobby(String lobbyID, boolean isRandom)
-	{
-		return new Lobby(lobbyID, pass, isRandom);//passいらないのでは
-	}
-
 	/**
 	 * ロビーを退出するメソッド
 	 * @param userID ユーザID
@@ -314,7 +311,7 @@ class ClientManageServer
 		User user = this.searchUser(userID);
 		String lobbyID = user.getLobbyID();
 		Lobby lobby = this.searchLobby(lobbyID);
-		AllayList<User> lobbyUsers = lobby.getUserList();
+		ArrayList<User> lobbyUsers = lobby.getUserList();
 
 		Session session;
 		for(int num = 0; num < lobbyUsers.size(); num++)
