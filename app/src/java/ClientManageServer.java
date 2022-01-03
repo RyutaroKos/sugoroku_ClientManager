@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import org.json.JSONObject;
-
+import javax.websocket.Session;
 /**
  *クライアントを管理するクラス
  *@author fumofumo3
@@ -200,10 +200,10 @@ class ClientManageServer
 		user.setLobbyID(lobby.getLobbyID());
 
 		ArrayList<User> lobbyUsers = lobby.getUserList();
-		String sockID;
+		Session session;
 		for(int num = 0; num < lobbyUsers.size(); num++)
 		{
-			sockID = lobbyUsers.get(num).getWebSocketID();
+			session = lobbyUsers.get(num).getSession();
 			//msgはどうするか
 		}
 	}
@@ -316,10 +316,10 @@ class ClientManageServer
 		Lobby lobby = this.searchLobby(lobbyID);
 		AllayList<User> lobbyUsers = lobby.getUserList();
 
-		String sockID;
+		Session session;
 		for(int num = 0; num < lobbyUsers.size(); num++)
 		{
-			sockID = lobbyUsers.get(num).getWebSocketID();
+			session = lobbyUsers.get(num).getSession();
 			//msgはどうするか
 		}
 	}
@@ -379,13 +379,13 @@ class ClientManageServer
 		}
 	}
 
-	private String searchSessionUserID(String sockID)
+	private String searchSessionUserID(String sessionID)
 	{
-		String id;
+		String userSesID;
 		for(User user : this.users)
 		{
-			id = user.getWebSocketID();
-			if(id.equals(sockID))
+			userSesID = user.getSession().getID();
+			if(userSesID.equals(sessionID))
 			{
 				return user.getName();
 			}
