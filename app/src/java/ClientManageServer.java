@@ -29,7 +29,7 @@ class ClientManageServer
 
 	public ClientManageServer()
 	{
-		this.users = new ArrayList<User>();　//sign in 管理用のユーザリスト
+		this.users = new ArrayList<User>();//sign in 管理用のユーザリスト
 		this.lobbys = new ArrayList<Lobby>();
 		this.dbManager = new DatabaseManager();
 		this.comManager = new ComManager();
@@ -111,7 +111,7 @@ class ClientManageServer
     	jsonObj.put(RES, LOGIN);
 		String msg;
 
-		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//登録チェック
+		boolean isRegisteredUser = this.dbManager.searchUser(userID, pwd);//登録チェック
 		if(isRegisteredUser)//登録されている場合
         {
             if(this.isSignedInUser(userID))
@@ -139,23 +139,30 @@ class ClientManageServer
 
 	/**
 	 * サインアップをするメソッド
-	 *
 	 * @param userID ユーザID
 	 * @param pwd パスワード
 	 */
-	public void signUp(String userID, String pwd)
+	public void signUp(String userID, String pwd, Session session)
 	{
-		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//signUpで成功失敗の判定でもいいのでは
+		JSONObject jsonObj = new JSONObject();
+    	jsonObj.put(RES, SIGNUP);
+		String msg;
 
+		boolean isRegisteredUser = this.dbManager.searchUser(userID, pwd);
 		if(isRegisteredUser)
 		{
-            //失敗メッセージを返す。
+            //失敗メッセージを追加
+        	jsonObj.put(STATUS, FALSE);
 		}
 		else
 		{
+			//signUp処理
 			this.dbManager.signUp(userID, pwd);
-			this.comManager.sendMessage();//要msgの形式確認
+        	jsonObj.put(STATUS, TRUE);
 		}
+		//メッセージ送信
+    	msg = jsonObj.toString();
+    	this.comManager.sendMessage(session, msg);
 	}
 
 	/**
