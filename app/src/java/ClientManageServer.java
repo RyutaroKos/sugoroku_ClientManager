@@ -29,7 +29,7 @@ class ClientManageServer
 
 	public ClientManageServer()
 	{
-		this.users = new ArrayList<User>();　//sign in 管理用のユーザリスト
+		this.users = new ArrayList<User>();//sign in 管理用のユーザリスト
 		this.lobbys = new ArrayList<Lobby>();
 		this.dbManager = new DatabaseManager();
 		this.comManager = new ComManager();
@@ -111,7 +111,7 @@ class ClientManageServer
     	jsonObj.put(RES, LOGIN);
 		String msg;
 
-		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//登録チェック
+		boolean isRegisteredUser = this.dbManager.searchUser(userID, pwd);//登録チェック
 		if(isRegisteredUser)//登録されている場合
         {
             if(this.isSignedInUser(userID))
@@ -139,30 +139,37 @@ class ClientManageServer
 
 	/**
 	 * サインアップをするメソッド
-	 *
 	 * @param userID ユーザID
 	 * @param pwd パスワード
+	 * @param session セッション
 	 */
-	public void signUp(String userID, String pwd)
+	public void signUp(String userID, String pwd, Session session)
 	{
-		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//signUpで成功失敗の判定でもいいのでは
+		JSONObject jsonObj = new JSONObject();
+    	jsonObj.put(RES, SIGNUP);
+		String msg;
 
+		boolean isRegisteredUser = this.dbManager.searchUser(userID, pwd);
 		if(isRegisteredUser)
 		{
-            //失敗メッセージを返す。
+            //失敗メッセージを追加
+        	jsonObj.put(STATUS, FALSE);
 		}
 		else
 		{
+			//signUp処理
 			this.dbManager.signUp(userID, pwd);
-			this.comManager.sendMessage();//要msgの形式確認
+        	jsonObj.put(STATUS, TRUE);
 		}
+		//メッセージ送信
+    	msg = jsonObj.toString();
+    	this.comManager.sendMessage(session, msg);
 	}
 
 	/**
 	 * サインアウトをするメソッド
 	 * @author fumofumo3
 	 * @param userID ユーザID
-	 * @param pwd パスワード
 	 */
 	public void signOut(String userID)
 	{
@@ -174,14 +181,16 @@ class ClientManageServer
 			{
 			    switch(user.getStatus())
 			    {
-                case 1:
-                case 2:
-                    exitLobby(user.get.getName());
-                case 3:
-                    //? gaming
-                default: //0
-                    this.users.remove(num);//sign out
+                	case 1:
+                		this.exitLobby(user.getName());
+                		break;
+                	case 2:
+                		this.exitLobby(user.getName());
+                		break;
+                	default:
+                		break;
 			    }
+			    this.users.remove(num);//sign out
 			    break;
 			}
 		}
@@ -209,7 +218,7 @@ class ClientManageServer
         Lobby lobby = searchLobby(lobbyID);
         if(lobby == null)
         {
-            lobby = new Lobby(lobbyID, null, false);//pwd??
+            lobby = new Lobby(lobbyID, false);
         }
         User user = this.searchUser(userID);
         user.setStatus(2);
@@ -223,15 +232,44 @@ class ClientManageServer
 	 */
     public void match(Lobby lobby, User user)//コードの再利用
 	{
+    	//互いを設定する
 	    lobby.addUser(user);
 		user.setLobbyID(lobby.getLobbyID());
 
 		ArrayList<User> lobbyUsers = lobby.getUserList();
+		JSONObject jsonObj = new JSONObject();
 		Session session;
-		for(int num = 0; num < lobbyUsers.size(); num++)
+		String msg;
+
+		//ランダムかプライベートかでメッセージを変更する
+		if(lobby.isRandomLobby())
 		{
-			session = lobbyUsers.get(num).getSession();
-			//msgはどうするか
+	    	jsonObj.put(RES, RAND_MATCH);
+		}
+		else
+		{
+	    	jsonObj.put(RES, PRI_MATCH);
+		}
+
+		jsonObj.put(STATUS, TRUE);
+		jsonObj.put("LobbyID", lobby.getLobbyID());
+
+		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("PlayerList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 	}
 
@@ -264,11 +302,37 @@ class ClientManageServer
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
 
-		lobby.deleteUser(userID);//user ready状態の変更？
+		lobby.deleteUser(userID);
 		user.setStatus(0);
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
+			return true;
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
+
+		jsonObj.put(RES, EXIT_LOB);
+
+		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("PlayerList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 
 		return true;
@@ -290,7 +354,7 @@ class ClientManageServer
 
 	    	if(lobby == null)
 	    	{
-	    		return createLobby(randLobbyID, true);
+	    		return new Lobby(randLobbyID, true);
 	    	}
 	    	else
 	    	{
