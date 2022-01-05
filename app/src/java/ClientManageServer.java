@@ -302,11 +302,37 @@ class ClientManageServer
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
 
-		lobby.deleteUser(userID);//user ready状態の変更？
+		lobby.deleteUser(userID);
 		user.setStatus(0);
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
+			return true;
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
+
+		jsonObj.put(RES, EXIT_LOB);
+
+		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("PlayerList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 
 		return true;
