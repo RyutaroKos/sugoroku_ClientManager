@@ -170,7 +170,6 @@ class ClientManageServer
 	 * サインアウトをするメソッド
 	 * @author fumofumo3
 	 * @param userID ユーザID
-	 * @param pwd パスワード
 	 */
 	public void signOut(String userID)
 	{
@@ -182,14 +181,16 @@ class ClientManageServer
 			{
 			    switch(user.getStatus())
 			    {
-                case 1:
-                case 2:
-                    exitLobby(user.get.getName());
-                case 3:
-                    //? gaming
-                default: //0
-                    this.users.remove(num);//sign out
+                	case 1:
+                		this.exitLobby(user.getName());
+                		break;
+                	case 2:
+                		this.exitLobby(user.getName());
+                		break;
+                	default:
+                		break;
 			    }
+			    this.users.remove(num);//sign out
 			    break;
 			}
 		}
