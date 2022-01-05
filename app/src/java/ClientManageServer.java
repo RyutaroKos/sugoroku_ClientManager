@@ -347,9 +347,9 @@ class ClientManageServer
 	    Lobby lobby;
 	    String randLobbyID;
 
-	    for(int i = 0; i < 10000; i++)
+	    for(int i = 0; i < 100; i++)
 	    {
-	    	randLobbyID = String.format("%05d", i);
+	    	randLobbyID = String.format("%02d", i);
 	    	lobby = this.searchLobby(randLobbyID);
 
 	    	if(lobby == null)
