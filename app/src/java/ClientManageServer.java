@@ -62,7 +62,7 @@ class ClientManageServer
 			case LOGIN:
 				userID = jsonObj.getString("Username");
 				pwd = jsonObj.getString("Password");
-				this.signIn(userID, pwd);
+				this.signIn(userID, pwd, session);
 				break;
 			case SIGNUP:
 				userID = jsonObj.getString("Username");
