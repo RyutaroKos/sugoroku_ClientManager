@@ -328,7 +328,7 @@ class ClientManageServer
 
 	    	if(lobby == null)
 	    	{
-	    		return createLobby(randLobbyID, true);
+	    		return new Lobby(randLobbyID, true);
 	    	}
 	    	else
 	    	{
