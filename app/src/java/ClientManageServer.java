@@ -141,6 +141,7 @@ class ClientManageServer
 	 * サインアップをするメソッド
 	 * @param userID ユーザID
 	 * @param pwd パスワード
+	 * @param session セッション
 	 */
 	public void signUp(String userID, String pwd, Session session)
 	{
