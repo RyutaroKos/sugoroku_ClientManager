@@ -12,6 +12,20 @@ class ClientManageServer
 	private DatabaseManager dbManager;
 	private ComManager comManager;
 
+	private static final String LOGIN = "LOGIN";
+	private static final String SIGNUP = "SIGNUP";
+	private static final String RAND_MATCH = "RANDOM_MATCH";
+	private static final String PRI_MATCH = "PRIVATE_MATCH";
+	private static final String CHECK_REC = "CHECK_RECORD";
+	private static final String EXIT_LOB = "EXIT_LOBBY";
+	private static final String SEND_CHAT = "SEND_CHAT";
+	private static final String START_GAME = "START_GAME";
+	private static final String MAKE_GAME = "MAKE_GAME";
+
+	private static final String RES = "Result";
+	private static final String STATUS = "Status";
+	private static final String TRUE = "true";
+	private static final String FALSE = "false";
 
 	public ClientManageServer()
 	{
@@ -32,7 +46,8 @@ class ClientManageServer
 		JSONObject jsonObj;
 		String request;
 		String userID;
-
+		String pwd;
+		String lobbyID;
 
 		msg = comManager.deq();
 		session = msg.getSession();
@@ -41,41 +56,40 @@ class ClientManageServer
 		userID = this.searchSessionUserID(session.getID());
 		request = jsonObj.getString("Request");
 
-		String pwd;
-		String lobbyID;
+
 		switch(request)
 		{
-			case "LOGIN":
+			case LOGIN:
 				userID = jsonObj.getString("Username");
 				pwd = jsonObj.getString("Password");
-				this.signIn(userID, pwd);
+				this.signIn(userID, pwd, session);
 				break;
-			case "SIGNUP":
+			case SIGNUP:
 				userID = jsonObj.getString("Username");
 				pwd = jsonObj.getString("Password");
-				this.signUp(userID, pwd);
+				this.signUp(userID, pwd, session);
 				break;
-			case "RANDOM_MATCH":
+			case RAND_MATCH:
 				this.matchRandom(userID);
 				break;
-			case "PRIVATE_MATCH":
+			case PRI_MATCH:
 				lobbyID = jsonObj.getString("LobbyID");
 				this.matchPrivate(userID, lobbyID);
 				break;
-			case "CHECK_RECORD":
+			case CHECK_REC:
 
 				break;
-			case "EXIT_LOBBY":
+			case EXIT_LOB:
 				this.exitLobby(userID);
 				break;
-			case "SEND_CHAT":
+			case SEND_CHAT:
 				String chat = jsonObj.getString("Message");
 				this.castChat(userID, chat);
 				break;
-			case "START_GAME":
+			case START_GAME:
 				this.prepareGame(userID);
 				break;
-			case "MAKE_GAME":
+			case MAKE_GAME:
 				lobbyID = jsonObj.getString("LobbyID");
 				this.startGame(lobbyID);
 				break;
@@ -89,28 +103,38 @@ class ClientManageServer
 	 * @author fumofumo3
 	 * @param userID ユーザID
 	 * @param pwd パスワード
+	 * @param session セッション
 	 */
-	public void signIn(String userID, String pwd)
+	public void signIn(String userID, String pwd, Session session)
 	{
+		JSONObject jsonObj = new JSONObject();
+    	jsonObj.put(RES, LOGIN);
+		String msg;
+
 		boolean isRegisteredUser = dbManager.searchUser(userID, pwd);//登録チェック
 		if(isRegisteredUser)//登録されている場合
         {
             if(this.isSignedInUser(userID))
             {
-                //既にsignIn中、失敗メッセージを返す
+                //signIn済み、失敗メッセージを追加
+            	jsonObj.put(STATUS, FALSE);
             }
-            else//signIn処理を行う
+            else
             {
-                User user = new User();
-                this.users.add(user);//sign in
-                comManager.sendMessage();//str
+            	//signIn処理、成功メッセージを追加
+                User user = new User(userID, session);
+                this.users.add(user);//signIn
+            	jsonObj.put(STATUS, TRUE);
             }
         }
         else
         {
-            // 登録されていない 失敗メッセージ
+            // 登録されていない、失敗メッセージを追加
+        	jsonObj.put(STATUS, FALSE);
         }
-
+		//メッセージ送信
+    	msg = jsonObj.toString();
+    	this.comManager.sendMessage(session, msg);
 	}
 
 	/**
