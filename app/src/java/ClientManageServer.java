@@ -218,7 +218,7 @@ class ClientManageServer
         Lobby lobby = searchLobby(lobbyID);
         if(lobby == null)
         {
-            lobby = new Lobby(lobbyID, null, false);//pwd??
+            lobby = new Lobby(lobbyID, false);
         }
         User user = this.searchUser(userID);
         user.setStatus(2);
