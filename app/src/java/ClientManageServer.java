@@ -232,15 +232,44 @@ class ClientManageServer
 	 */
     public void match(Lobby lobby, User user)//コードの再利用
 	{
+    	//互いを設定する
 	    lobby.addUser(user);
 		user.setLobbyID(lobby.getLobbyID());
 
 		ArrayList<User> lobbyUsers = lobby.getUserList();
+		JSONObject jsonObj = new JSONObject();
 		Session session;
-		for(int num = 0; num < lobbyUsers.size(); num++)
+		String msg;
+
+		//ランダムかプライベートかでメッセージを変更する
+		if(lobby.isRandomLobby())
 		{
-			session = lobbyUsers.get(num).getSession();
-			//msgはどうするか
+	    	jsonObj.put(RES, RAND_MATCH);
+		}
+		else
+		{
+	    	jsonObj.put(RES, PRI_MATCH);
+		}
+
+		jsonObj.put(STATUS, TRUE);
+		jsonObj.put("LobbyID", lobby.getLobbyID());
+
+		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("PlayerList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 	}
 
