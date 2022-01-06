@@ -368,25 +368,16 @@ class ClientManageServer
 	    //ランダムロビー数上限に到達
 	}
 
-	public void startGame(String str)
+	public void prepareGame()
+	{
+
+	}
+
+	public void startGame()
 	{
 
 		//開始時にステータスを変更
-		/*
-		User user;
-		for(int num = 0; num < this.users.size(); num++)
-		{
-			user = this.users.get(num);
-			if(user.getStatus==1||2)\
-            {
-                user.setStatus(3);
-            }
-			else
-            {
-                //error処理
-            }
-		}
-		*/
+
 	}
 
 	/**
