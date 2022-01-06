@@ -438,6 +438,8 @@ class ClientManageServer
 			this.comManager.sendMessage(session, msg);
 			lobUser.setStatus(3);
 		}
+
+		this.deleteLobby(lobby);
 	}
 
 	/**
