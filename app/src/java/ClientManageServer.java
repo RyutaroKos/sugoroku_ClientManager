@@ -302,6 +302,8 @@ class ClientManageServer
         //
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
+		String chat = userID + "が退出しました。";
+		this.castChat("System", lobbyID, chat);
 
 		lobby.deleteUser(userID);
 		user.setStatus(0);
