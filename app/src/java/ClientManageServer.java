@@ -382,23 +382,33 @@ class ClientManageServer
 
 	/**
 	 * ユーザが所属するロビーにチャットを送るメソッド
-	 * @param userID ユーザID
+	 * @param sender 送信者名
+	 * @param lobbyID 送信先のロビーID
 	 * @param chat チャット
 	 */
-	public void castChat(String userID, String chat)
+	public void castChat(String sender, String lobbyID, String chat)
 	{
-		User user = this.searchUser(userID);
-		String lobbyID = user.getLobbyID();
 		Lobby lobby = this.searchLobby(lobbyID);
 		ArrayList<User> lobbyUsers = lobby.getUserList();
 
+		JSONObject jsonObj = new JSONObject();
 		Session session;
-		for(int num = 0; num < lobbyUsers.size(); num++)
+		String msg;
+
+		jsonObj.put(RES, SEND_CHAT);
+		jsonObj.put("Username", sender);
+		jsonObj.put("Message", chat);
+
+		//メッセージ送信
+		msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
 		{
-			session = lobbyUsers.get(num).getSession();
-			//msgはどうするか
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 	}
+
+
 
 	private boolean isSignedInUser(String userID)
 	{
