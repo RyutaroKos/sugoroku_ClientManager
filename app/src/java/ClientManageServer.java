@@ -371,12 +371,20 @@ class ClientManageServer
 	    //ランダムロビー数上限に到達
 	}
 
+	/**
+	 * ゲーム開始の準備を行うメソッド
+	 * @param userID ユーザID
+	 */
 	public void prepareGame(String userID)
 	{
 
 
 	}
 
+	/**
+	 * 指定されたロビーに居るユーザに、ゲーム開始メッセージを送るメソッド
+	 * @param lobbyID ロビーID
+	 */
 	public void startGame(String lobbyID)
 	{
 		JSONObject jsonObj = new JSONObject();
