@@ -372,13 +372,46 @@ class ClientManageServer
 	}
 
 	/**
+	 * WIP
 	 * ゲーム開始の準備を行うメソッド
 	 * @param userID ユーザID
 	 */
 	public void prepareGame(String userID)
 	{
+		User user = this.searchUser(userID);
+		String lobbyID = user.getLobbyID();
+		Lobby lobby = this.searchLobby(lobbyID);
 
+		lobby.setReady(userID);
 
+		boolean isReady;//lobby内が規定人数以上で、全員が準備完了している場合
+
+		if(!isReady)
+		{
+			return;
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
+
+		jsonObj.put("Request", MAKE_GAME);
+		jsonObj.put("LobbyID", lobbyID);
+
+		//keyをUserList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("UserList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		//アプリケーションサーバにどのように送信するのか
 	}
 
 	/**
