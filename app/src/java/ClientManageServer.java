@@ -371,16 +371,32 @@ class ClientManageServer
 	    //ランダムロビー数上限に到達
 	}
 
-	public void prepareGame()
+	public void prepareGame(String userID)
 	{
+
 
 	}
 
-	public void startGame()
+	public void startGame(String lobbyID)
 	{
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
 
-		//開始時にステータスを変更
+		jsonObj.put(RES, START_GAME);
+		jsonObj.put(STATUS, TRUE);
 
+		//メッセージ送信
+    	msg = jsonObj.toString();
+
+		Lobby lobby = this.searchLobby(lobbyID);
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
+			lobUser.setStatus(3);
+		}
 	}
 
 	/**
