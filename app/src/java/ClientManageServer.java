@@ -84,7 +84,8 @@ class ClientManageServer
 				break;
 			case SEND_CHAT:
 				String chat = jsonObj.getString("Message");
-				this.castChat(userID, chat);
+				lobbyID = this.searchUser(userID).getLobbyID();
+				this.castChat(userID, lobbyID, chat);
 				break;
 			case START_GAME:
 				this.prepareGame(userID);
