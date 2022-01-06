@@ -84,7 +84,8 @@ class ClientManageServer
 				break;
 			case SEND_CHAT:
 				String chat = jsonObj.getString("Message");
-				this.castChat(userID, chat);
+				lobbyID = this.searchUser(userID).getLobbyID();
+				this.castChat(userID, lobbyID, chat);
 				break;
 			case START_GAME:
 				this.prepareGame(userID);
@@ -301,6 +302,8 @@ class ClientManageServer
         //
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
+		String chat = userID + "が退出しました。";
+		this.castChat("System", lobbyID, chat);
 
 		lobby.deleteUser(userID);
 		user.setStatus(0);
@@ -347,9 +350,9 @@ class ClientManageServer
 	    Lobby lobby;
 	    String randLobbyID;
 
-	    for(int i = 0; i < 10000; i++)
+	    for(int i = 0; i < 100; i++)
 	    {
-	    	randLobbyID = String.format("%05d", i);
+	    	randLobbyID = String.format("%02d", i);
 	    	lobby = this.searchLobby(randLobbyID);
 
 	    	if(lobby == null)
@@ -368,46 +371,106 @@ class ClientManageServer
 	    //ランダムロビー数上限に到達
 	}
 
-	public void startGame(String str)
-	{
-
-		//開始時にステータスを変更
-		/*
-		User user;
-		for(int num = 0; num < this.users.size(); num++)
-		{
-			user = this.users.get(num);
-			if(user.getStatus==1||2)\
-            {
-                user.setStatus(3);
-            }
-			else
-            {
-                //error処理
-            }
-		}
-		*/
-	}
-
 	/**
-	 * ユーザが所属するロビーにチャットを送るメソッド
+	 * WIP
+	 * ゲーム開始の準備を行うメソッド
 	 * @param userID ユーザID
-	 * @param chat チャット
 	 */
-	public void castChat(String userID, String chat)
+	public void prepareGame(String userID)
 	{
 		User user = this.searchUser(userID);
 		String lobbyID = user.getLobbyID();
 		Lobby lobby = this.searchLobby(lobbyID);
+
+		lobby.setReady(userID);
+
+		boolean isReady;//lobby内が規定人数以上で、全員が準備完了している場合
+
+		if(!isReady)
+		{
+			return;
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
+
+		jsonObj.put("Request", MAKE_GAME);
+		jsonObj.put("LobbyID", lobbyID);
+
+		//keyをUserList,valueをユーザ名リスト(JSONArray)に設定する
+		JSONArray userNameJSA = new JSONArray();
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			JSONObject userNameJSO = new JSONObject();
+			userNameJSO.put("Username", lobUser.getName());
+			userNameJSA.put(userNameJSO);
+		}
+		jsonObj.put("UserList", userNameJSA);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+		//アプリケーションサーバにどのように送信するのか
+	}
+
+	/**
+	 * 指定されたロビーに居るユーザに、ゲーム開始メッセージを送るメソッド
+	 * @param lobbyID ロビーID
+	 */
+	public void startGame(String lobbyID)
+	{
+		JSONObject jsonObj = new JSONObject();
+		Session session;
+		String msg;
+
+		jsonObj.put(RES, START_GAME);
+		jsonObj.put(STATUS, TRUE);
+
+		//メッセージ送信
+    	msg = jsonObj.toString();
+
+		Lobby lobby = this.searchLobby(lobbyID);
+		ArrayList<User> lobbyUsers = lobby.getUserList();
+		for(User lobUser : lobbyUsers)
+		{
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
+			lobUser.setStatus(3);
+		}
+
+		this.deleteLobby(lobby);
+	}
+
+	/**
+	 * ユーザが所属するロビーにチャットを送るメソッド
+	 * @param sender 送信者名
+	 * @param lobbyID 送信先のロビーID
+	 * @param chat チャット
+	 */
+	public void castChat(String sender, String lobbyID, String chat)
+	{
+		Lobby lobby = this.searchLobby(lobbyID);
 		ArrayList<User> lobbyUsers = lobby.getUserList();
 
+		JSONObject jsonObj = new JSONObject();
 		Session session;
-		for(int num = 0; num < lobbyUsers.size(); num++)
+		String msg;
+
+		jsonObj.put(RES, SEND_CHAT);
+		jsonObj.put("Username", sender);
+		jsonObj.put("Message", chat);
+
+		//メッセージ送信
+		msg = jsonObj.toString();
+		for(User lobUser : lobbyUsers)
 		{
-			session = lobbyUsers.get(num).getSession();
-			//msgはどうするか
+			session = lobUser.getSession();
+			this.comManager.sendMessage(session, msg);
 		}
 	}
+
+
 
 	private boolean isSignedInUser(String userID)
 	{
