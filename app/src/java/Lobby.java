@@ -10,16 +10,14 @@ class Lobby
 	private String lobbyID;
 	private boolean isRandom;
 	private ArrayList<Boolean> readyList;
-	private String lobbyPassword; //これいる?
 
 
-	public Lobby(String id, String pass, boolean randomFlag)//private or random
+	public Lobby(String id, boolean randomFlag)//private or random
 	{
 		this.users = new ArrayList<>();
     	this.lobbyID = id;
     	this.isRandom = randomFlag;
 		this.readyList = new ArrayList<>();
-		this.lobbyPassword = pass;
 	}
 
 	public String getLobbyID()
