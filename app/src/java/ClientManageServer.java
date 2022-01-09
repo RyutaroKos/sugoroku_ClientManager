@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import javax.websocket.Session;
 /**
  *クライアントを管理するクラス
@@ -53,7 +54,7 @@ class ClientManageServer
 		session = msg.getSession();
 		jsonObj = msg.getData();
 
-		userID = this.searchSessionUserID(session.getID());
+		userID = this.searchSessionUserID(session.getId());
 		request = jsonObj.getString("Request");
 
 
@@ -532,7 +533,7 @@ class ClientManageServer
 		String userSesID;
 		for(User user : this.users)
 		{
-			userSesID = user.getSession().getID();
+			userSesID = user.getSession().getId();
 			if(userSesID.equals(sessionID))
 			{
 				return user.getName();
