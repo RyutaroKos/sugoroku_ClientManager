@@ -385,9 +385,8 @@ class ClientManageServer
 
 		lobby.setReady(userID);
 
-		boolean isReady;//lobby内が規定人数以上で、全員が準備完了している場合
-
-		if(!isReady)
+		//lobby内が規定人数以上で、全員が準備完了している場合
+		if(!lobby.isReady())
 		{
 			return;
 		}
