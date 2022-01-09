@@ -62,6 +62,34 @@ class Lobby
 		this.readyList.set(pos,true);
 	}
 
+	public boolean isReady()
+	{
+		if(this.isRandom)
+		{
+			if(4 != this.users.size())
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if(this.users.size() < 2)
+			{
+				return false;
+			}
+		}
+
+		for(boolean ready : readyList)
+		{
+			if(!ready)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public void addUser(User user)
 	{
 		this.users.add(user);
