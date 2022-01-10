@@ -4,10 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-class DatabaseManager
 /**DB通信管理クラス
  * @author 福嶋大智
  */
+class DatabaseManager
 {
 	//Server URL
 	private static final String url = "jdbc:mysql://sql.yamazaki.se.shibaura-it.ac.jp";
@@ -20,15 +20,15 @@ class DatabaseManager
 	private static final String sqlUserId = "group_c";
 	//Password
 	private static final String sqlPassword = "group_c";
-	
+
 	private Connection connection;
 	private Statement stmt;
-	
+
 	//Table Name
 	private static final String tableName = "userinfo";
 	//Param List
 	private static final String params = "id VARCHAR(10), pwd VARCHAR(30), battles INTEGER, wins INTEGER, PRIMARY KEY (id)";
-	
+
 	DatabaseManager()
 	{
 		try {
@@ -39,11 +39,11 @@ class DatabaseManager
 		}
 		this.connect();
 	}
-	
-	private void connect()
+
 	/**接続を確立する
 	 * @author 福嶋大智
 	 */
+	private void connect()
 	{
 		try {
 			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName;
@@ -53,21 +53,21 @@ class DatabaseManager
 			e.printStackTrace();
 		}
 	}
-	
-	public boolean searchUser(String id, String pwd)
+
 	/**引数のID,パスワードに該当するユーザがいるかどうかを返す
 	 * @author 福嶋大智
 	 * @params id ユーザID, pwd パスワード
 	 */
+	public boolean searchUser(String id, String pwd)
 	{
 		String tmp = this.getPassword(id);
 		return pwd.equals(tmp);
 	}
-	
-	public int signup(String id, String pwd)
+
 	/**ユーザを登録する．idは主キーなので，重複するとMySQLIntegrityConstraintViolationExceptionがスローされる
 	 * @author 福嶋大智
 	 */
+	public int signUp(String id, String pwd)
 	{
 		int success;
 		try {
@@ -80,11 +80,11 @@ class DatabaseManager
 		return success;
 	}
 
-	private String getPassword(String id)
 	/**IDに対応するユーザのパスワードを返す
 	 * @author 福嶋大智
 	 * @params id ユーザID
 	 */
+	private String getPassword(String id)
 	{
 		String pwd = "aaa";
 		try {
@@ -100,11 +100,11 @@ class DatabaseManager
 		}
 		return pwd;
 	}
-	
-	public String confirmRecord(String id)
+
 	/**対戦数,勝利数　の形で文字列として返すメソッド．間は半角カンマで区切られている．戦績の計算は別途必要
 	 * @author 福嶋大智
 	 */
+	public String confirmRecord(String id)
 	{
 		String numBattlesAndWins = "aaa";
 		try {
@@ -126,11 +126,11 @@ class DatabaseManager
 		}
 		return numBattlesAndWins;
 	}
-	
-	public int makeTabel()
+
 	/**テーブルを新たに作成する
 	 * @author 福嶋大智
 	 */
+	public int makeTabel()
 	{
 		int result = -1;
 		try {
@@ -142,29 +142,29 @@ class DatabaseManager
 		}
 		return result;
 	}
-	
-	public int deleteTable()
+
 	/**作成済みのテーブルを消去する
 	 * @author 福嶋大智
 	 */
+	public int deleteTable()
 	{
 		int result = -1;
 		try {
 			String queryString = "DROP TABLE "+ tableName;
 			result = this.stmt.executeUpdate(queryString);
-		
+
 		} catch(SQLException e) {
 			result = -1;
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
-	public void close()
+
 	/**接続を終了する
 	 * @author 福嶋大智
-	 * 
+	 *
 	 */
+	public void close()
 	{
 		try {
 			if (connection != null)
