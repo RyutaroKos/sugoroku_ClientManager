@@ -11,7 +11,6 @@ class ClientManageServer
 	private ArrayList<User> users;
 	private ArrayList<Lobby> lobbys;
 	private DatabaseManager dbManager;
-	private ComManager comManager;
 
 	private static final String LOGIN = "LOGIN";
 	private static final String SIGNUP = "SIGNUP";
@@ -33,7 +32,6 @@ class ClientManageServer
 		this.users = new ArrayList<User>();//sign in 管理用のユーザリスト
 		this.lobbys = new ArrayList<Lobby>();
 		this.dbManager = new DatabaseManager();
-		this.comManager = new ComManager();
 	}
 
 	/**
@@ -50,7 +48,7 @@ class ClientManageServer
 		String pwd;
 		String lobbyID;
 
-		msg = comManager.deq();
+		msg = ComManager.deq();
 		session = msg.getSession();
 		jsonObj = msg.getData();
 
@@ -136,7 +134,7 @@ class ClientManageServer
         }
 		//メッセージ送信
     	msg = jsonObj.toString();
-    	this.comManager.sendMessage(session, msg);
+    	ComManager.sendMessage(session, msg);
 	}
 
 	/**
@@ -165,7 +163,7 @@ class ClientManageServer
 		}
 		//メッセージ送信
     	msg = jsonObj.toString();
-    	this.comManager.sendMessage(session, msg);
+    	ComManager.sendMessage(session, msg);
 	}
 
 	/**
@@ -271,7 +269,7 @@ class ClientManageServer
 		for(User lobUser : lobbyUsers)
 		{
 			session = lobUser.getSession();
-			this.comManager.sendMessage(session, msg);
+			ComManager.sendMessage(session, msg);
 		}
 	}
 
@@ -336,7 +334,7 @@ class ClientManageServer
 		for(User lobUser : lobbyUsers)
 		{
 			session = lobUser.getSession();
-			this.comManager.sendMessage(session, msg);
+			ComManager.sendMessage(session, msg);
 		}
 
 		return true;
@@ -435,7 +433,7 @@ class ClientManageServer
 		for(User lobUser : lobbyUsers)
 		{
 			session = lobUser.getSession();
-			this.comManager.sendMessage(session, msg);
+			ComManager.sendMessage(session, msg);
 			lobUser.setStatus(3);
 		}
 
@@ -466,7 +464,7 @@ class ClientManageServer
 		for(User lobUser : lobbyUsers)
 		{
 			session = lobUser.getSession();
-			this.comManager.sendMessage(session, msg);
+			ComManager.sendMessage(session, msg);
 		}
 	}
 
