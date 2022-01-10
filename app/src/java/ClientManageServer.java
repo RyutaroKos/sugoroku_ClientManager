@@ -102,7 +102,7 @@ class ClientManageServer implements Runnable
 					this.matchPrivate(userID, lobbyID);
 					break;
 				case CHECK_REC:
-
+					this.checkRecord(userID);
 					break;
 				case EXIT_LOB:
 					this.exitLobby(userID);
@@ -299,6 +299,31 @@ class ClientManageServer implements Runnable
 			ComManager.sendMessage(session, msg);
 		}
 	}
+
+    public void checkRecord(String userID)
+    {
+		JSONObject jsonObj = new JSONObject();
+    	jsonObj.put(RES, CHECK_REC);
+    	Session session;
+		String msg;
+
+    	String recordSet = this.dbManager.confirmRecord(userID);
+    	String[] records = recordSet.split(",");
+    	jsonObj.put("Win", records[1]);
+
+    	int battle = Integer.parseInt(records[0]);
+    	int win = Integer.parseInt(records[1]);
+    	int lose = battle - win;
+    	String loseStr = String.valueOf(lose);
+
+    	jsonObj.put("Lose", loseStr);
+
+		//メッセージ送信
+    	User user = this.searchUser(userID);
+    	session = user.getSession();
+    	msg = jsonObj.toString();
+    	ComManager.sendMessage(session, msg);
+    }
 
 	public boolean isExistLobby(String lobbyID)
 	{
