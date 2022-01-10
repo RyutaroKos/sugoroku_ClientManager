@@ -6,7 +6,7 @@ import javax.websocket.Session;
  *クライアントを管理するクラス
  *@author fumofumo3
  */
-class ClientManageServer
+class ClientManageServer implements Runnable
 {
 	private ArrayList<User> users;
 	private ArrayList<Lobby> lobbys;
@@ -34,11 +34,28 @@ class ClientManageServer
 		this.dbManager = new DatabaseManager();
 	}
 
+	public void run()
+	{
+		try
+		{
+			this.handleMessage();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+
+	synchronized public void ntf()
+	{
+		this.notify();
+	}
+
 	/**
 	 *WIP メッセージを処理して実行するメソッド
 	 *@author fumofumo3
 	 */
-	public void handleMessage()
+	synchronized public void handleMessage() throws Exception
 	{
 		Message msg;
 		Session session;
@@ -48,53 +65,63 @@ class ClientManageServer
 		String pwd;
 		String lobbyID;
 
-		msg = ComManager.deq();
-		session = msg.getSession();
-		jsonObj = msg.getData();
-
-		userID = this.searchSessionUserID(session.getId());
-		request = jsonObj.getString("Request");
-
-
-		switch(request)
+		while(true)
 		{
-			case LOGIN:
-				userID = jsonObj.getString("Username");
-				pwd = jsonObj.getString("Password");
-				this.signIn(userID, pwd, session);
-				break;
-			case SIGNUP:
-				userID = jsonObj.getString("Username");
-				pwd = jsonObj.getString("Password");
-				this.signUp(userID, pwd, session);
-				break;
-			case RAND_MATCH:
-				this.matchRandom(userID);
-				break;
-			case PRI_MATCH:
-				lobbyID = jsonObj.getString("LobbyID");
-				this.matchPrivate(userID, lobbyID);
-				break;
-			case CHECK_REC:
+			msg = ComManager.deq();
+			if(msg == null)
+			{
+				System.out.println("wait");
+				this.wait();
+				System.out.println("notify");
+				continue;
+			}
+			session = msg.getSession();
+			jsonObj = msg.getData();
 
-				break;
-			case EXIT_LOB:
-				this.exitLobby(userID);
-				break;
-			case SEND_CHAT:
-				String chat = jsonObj.getString("Message");
-				lobbyID = this.searchUser(userID).getLobbyID();
-				this.castChat(userID, lobbyID, chat);
-				break;
-			case START_GAME:
-				this.prepareGame(userID);
-				break;
-			case MAKE_GAME:
-				lobbyID = jsonObj.getString("LobbyID");
-				this.startGame(lobbyID);
-				break;
-			default:
-				break;
+			userID = this.searchSessionUserID(session.getId());
+			request = jsonObj.getString("Request");
+
+
+			switch(request)
+			{
+				case LOGIN:
+					userID = jsonObj.getString("Username");
+					pwd = jsonObj.getString("Password");
+					this.signIn(userID, pwd, session);
+					break;
+				case SIGNUP:
+					userID = jsonObj.getString("Username");
+					pwd = jsonObj.getString("Password");
+					this.signUp(userID, pwd, session);
+					break;
+				case RAND_MATCH:
+					this.matchRandom(userID);
+					break;
+				case PRI_MATCH:
+					lobbyID = jsonObj.getString("LobbyID");
+					this.matchPrivate(userID, lobbyID);
+					break;
+				case CHECK_REC:
+
+					break;
+				case EXIT_LOB:
+					this.exitLobby(userID);
+					break;
+				case SEND_CHAT:
+					String chat = jsonObj.getString("Message");
+					lobbyID = this.searchUser(userID).getLobbyID();
+					this.castChat(userID, lobbyID, chat);
+					break;
+				case START_GAME:
+					this.prepareGame(userID);
+					break;
+				case MAKE_GAME:
+					lobbyID = jsonObj.getString("LobbyID");
+					this.startGame(lobbyID);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
