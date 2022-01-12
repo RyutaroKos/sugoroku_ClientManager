@@ -104,11 +104,6 @@ class Lobby
 		this.readyList.remove(pos);
 	}
 
-	public String getPassword()
-	{
-		return this.lobbyPassword;
-	}
-
 	public boolean isRandomLobby()
 	{
 	    return isRandom;
