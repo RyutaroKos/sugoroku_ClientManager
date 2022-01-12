@@ -361,10 +361,12 @@ class ClientManageServer implements Runnable
         //
         //通信を行い、失敗した場合がfalseを返すのがどう？
         //
+
+		lobby.deleteUser(userID);
+
 		String chat = userID + "が退出しました。";
 		this.castChat("System", lobbyID, chat);
 
-		lobby.deleteUser(userID);
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
