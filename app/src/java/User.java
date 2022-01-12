@@ -1,7 +1,6 @@
-/**
- *ユーザのクラス
- *@author BP19025
- */
+ package cms;
+
+ import javax.websocket.Session;
 
 //user status
  #define outLobby 0
@@ -9,10 +8,11 @@
  #define inPrivate 2
  #define inGame 3
  //
- package cms;
 
- import javax.websocket.Session;
-
+/**
+ *ユーザのクラス
+ *@author BP19025
+ */
 class User
 {
     private String userName;
@@ -35,42 +35,65 @@ class User
         this.status = status;
         this.lobbyID = lobbyID;
     }
-
+	/**
+	 * ユーザ名をゲットするメソッド
+	 * @return userName ユーザ名
+	 */
     public String getName()
     {
         return this.userName;
     }
-
+	/**
+	 * セッション名をゲットするメソッド
+	 * @return session セッションのインスタンス
+	 */
     public Session getSession()
     {
         return this.session;
     }
-
+	/**
+	 * セッションをセットするメソッド
+	 * @param session セッションのインスタンス
+	 */
     public void setSession(Session session)
     {
         this.session = session;
     }
-
+	/**
+	 * ステータスをセットするメソッド
+	 * @param statusID ステータスID
+	 */
     public void setStatus(int statusID)
     {
         this.status = statusID;
     }
-
+	/**
+	 * ステータスをゲットするメソッド
+	 * @return statusID ステータスID
+	 */
     public int getStatus()
     {
         return this.status;
     }
-
+	/**
+	 * ロビーIDをセットするメソッド
+	 * @param LobbyID ロビーID
+	 */
     public void setLobbyID(String LobbyID)
     {
         this.lobbyID = LobbyID;
     }
-
+	/**
+	 * ロビーIDをゲットするメソッド
+	 * @return LobbyID ロビーID
+	 */
     public String getLobbyID()
     {
         return this.lobbyID;
     }
-
+	/**
+	 * ロビーから退室するメソッド
+	 */
     public void exitLobby()
     {
         setStatus(0);
