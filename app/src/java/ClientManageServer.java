@@ -284,13 +284,12 @@ class ClientManageServer implements Runnable
 		jsonObj.put("LobbyID", lobby.getLobbyID());
 
 		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
-		JSONArray userNameJSA = new JSONArray();
+		ArrayList<String> userNames = new ArrayList<String>();
 		for(User lobUser : lobbyUsers)
 		{
-			JSONObject userNameJSO = new JSONObject();
-			userNameJSO.put("Username", lobUser.getName());
-			userNameJSA.put(userNameJSO);
+			userNames.add(lobUser.getName());
 		}
+		JSONArray userNameJSA = new JSONArray(userNames);
 		jsonObj.put("PlayerList", userNameJSA);
 
 		//メッセージ送信
@@ -379,14 +378,13 @@ class ClientManageServer implements Runnable
 		jsonObj.put(RES, EXIT_LOB);
 
 		//keyをPlayerList,valueをユーザ名リスト(JSONArray)に設定する
-		JSONArray userNameJSA = new JSONArray();
 		ArrayList<User> lobbyUsers = lobby.getUserList();
+		ArrayList<String> userNames = new ArrayList<String>();
 		for(User lobUser : lobbyUsers)
 		{
-			JSONObject userNameJSO = new JSONObject();
-			userNameJSO.put("Username", lobUser.getName());
-			userNameJSA.put(userNameJSO);
+			userNames.add(lobUser.getName());
 		}
+		JSONArray userNameJSA = new JSONArray(userNames);
 		jsonObj.put("PlayerList", userNameJSA);
 
 		//メッセージ送信
@@ -458,14 +456,13 @@ class ClientManageServer implements Runnable
 		jsonObj.put("LobbyID", lobbyID);
 
 		//keyをUserList,valueをユーザ名リスト(JSONArray)に設定する
-		JSONArray userNameJSA = new JSONArray();
 		ArrayList<User> lobbyUsers = lobby.getUserList();
+		ArrayList<String> userNames = new ArrayList<String>();
 		for(User lobUser : lobbyUsers)
 		{
-			JSONObject userNameJSO = new JSONObject();
-			userNameJSO.put("Username", lobUser.getName());
-			userNameJSA.put(userNameJSO);
+			userNames.add(lobUser.getName());
 		}
+		JSONArray userNameJSA = new JSONArray(userNames);
 		jsonObj.put("UserList", userNameJSA);
 
 		//メッセージ送信
