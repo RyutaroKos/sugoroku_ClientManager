@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *ロビーのクラス
- *@author DaichiF12
+ *@author 福嶋大智
  */
 class Lobby
 {
@@ -16,27 +16,36 @@ class Lobby
 
 	public Lobby(String id, boolean randomFlag)//private or random
 	{
-		this.users = new ArrayList<>();
+	this.users = new ArrayList<>();
     	this.lobbyID = id;
     	this.isRandom = randomFlag;
-		this.readyList = new ArrayList<>();
+	this.readyList = new ArrayList<>();
 	}
 
+	/**
+	*ロビーIDを取得
+	*@author 福嶋大智
+	*/
 	public String getLobbyID()
 	{
 		return this.lobbyID;
 	}
-
-	public int getTotalUserNum()// ロビー内のユーザ数を取得
+	
+	/**
+	*ロビー内のユーザ数を取得する
+	*@author 福嶋大智
+	*/
+	public int getTotalUserNum()
 	{
 		return this.users.size();
 	}
 
-	public int getUserNum(String userid)
 	/**
-	*該当するユーザIDを持つユーザのインデックスを返す //? int ?
+	*該当するユーザIDを持つユーザのインデックスを返す
+	*@author 福嶋大智
 	*@param userid ユーザID
 	*/
+	public int getUserNum(String userid)
 	{
 		int upos;
 		String idtmp;
@@ -53,17 +62,29 @@ class Lobby
 		return upos;
 	}
 
+	/**
+	*ユーザのリストを取得
+	*@author 福嶋大智
+	*/
 	public ArrayList<User> getUserList()
 	{
 		return this.users;
 	}
 
+	/**
+	*ユーザ単位で準備完了
+	*@author 福嶋大智
+	*/
 	public void setReady(String userid)
 	{
 		int pos = this.getUserNum(userid);
 		this.readyList.set(pos,true);
 	}
 
+	/**
+	*ロブー内の全ユーザが準備完了であるか
+	*@author 福嶋大智
+	*/
 	public boolean isReady()
 	{
 		if(this.isRandom)
@@ -92,12 +113,20 @@ class Lobby
 		return true;
 	}
 
+	/**
+	*ユーザをリストに追加する
+	*@author 福嶋大智
+	*/
 	public void addUser(User user)
 	{
 		this.users.add(user);
 		this.readyList.add(false);
 	}
 
+	/**
+	*リストのユーザを削除
+	*@author 福嶋大智
+	*/
 	public void deleteUser(String userid)
 	{
 		int pos = this.getUserNum(userid);
@@ -106,6 +135,10 @@ class Lobby
 		this.readyList.remove(pos);
 	}
 
+	/**
+	*ランダムロビーかどうか
+	*@author 福嶋大智
+	*/
 	public boolean isRandomLobby()
 	{
 	    return isRandom;
