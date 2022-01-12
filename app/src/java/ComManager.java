@@ -21,7 +21,7 @@ import javax.websocket.server.ServerEndpoint;
 public class ComManager {
 	private static ArrayList<Session> Sessions = new ArrayList<>();
 	static Queue<Message> queue = new ArrayDeque<>();
-
+	static ClientManageServer cms;
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig ec) {
@@ -38,6 +38,7 @@ public class ComManager {
         Message receivedMessage = new Message(message,session);
 	    //Messageインスタンスをキューに保存
         queue.add(receivedMessage);
+        cms.ntf();
     }
 
 
@@ -72,5 +73,10 @@ public class ComManager {
 
 	public static Message deq() {
 		return queue.poll();
+	}
+
+	public static void setCMS(ClientManageServer clientManSer)
+	{
+		cms = clientManSer;
 	}
 }

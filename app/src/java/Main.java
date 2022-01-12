@@ -19,14 +19,14 @@ public class Main {
 			trd.start();
 			server.start();
 		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 		finally
 		{
             server.stop();
 			trd.interrupt();
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
 		}
 	}
 }
