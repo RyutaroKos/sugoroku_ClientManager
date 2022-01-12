@@ -13,15 +13,24 @@ public class Message {
 		session = s;
 		data = new JSONObject(message);
 	}
-
+	/**
+	 * セッション名をゲットするメソッド
+	 * @return session セッションのインスタンス
+	 */
 	public Session getSession() {
 		return session;
 	}
-
+	/**
+	 * データをゲットするメソッド
+	 * @return data データ
+	 */
 	public JSONObject getData() {
 		return data;
 	}
-
+	/**
+	 * データをゲットするメソッド
+	 * @return String 送信するメッセージ
+	 */
 	public String toString() {
 		return "SessionID : "+ session.getId() + "data" + data.toString();
 	}

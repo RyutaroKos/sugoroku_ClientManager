@@ -301,7 +301,10 @@ class ClientManageServer implements Runnable
 			ComManager.sendMessage(session, msg);
 		}
 	}
-
+	/**
+	 * 戦績を見るメソッド
+	 * @param userID ユーザID
+	 */
     public void checkRecord(String userID)
     {
 		JSONObject jsonObj = new JSONObject();
@@ -326,7 +329,11 @@ class ClientManageServer implements Runnable
     	msg = jsonObj.toString();
     	ComManager.sendMessage(session, msg);
     }
-
+	/**
+	 * ロビーが存在するか否かを確認するメソッド
+	 * @param lobbyID ロビーID
+	 * @return boolean
+	 */
 	public boolean isExistLobby(String lobbyID)
 	{
 		String id;
@@ -359,7 +366,6 @@ class ClientManageServer implements Runnable
 		this.castChat("System", lobbyID, chat);
 
 		lobby.deleteUser(userID);
-		user.setStatus(0);
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
@@ -522,9 +528,11 @@ class ClientManageServer implements Runnable
 			ComManager.sendMessage(session, msg);
 		}
 	}
-
-
-
+	/**
+	 * ユーザが既にサインインしているか否かを確認するメソッド
+	 * @param userID ユーザID
+	 * @return boolean
+	 */
 	private boolean isSignedInUser(String userID)
 	{
 		User user = this.searchUser(userID);
@@ -537,7 +545,11 @@ class ClientManageServer implements Runnable
 			return true;
 		}
 	}
-
+	/**
+	 * ユーザを検索するメソッド
+	 * @param userID ユーザID
+	 * @return User　ユーザのインスタンス
+	 */
 	private User searchUser(String userID)
 	{
 		String id;
@@ -552,7 +564,11 @@ class ClientManageServer implements Runnable
 
 		return null;
 	}
-
+	/**
+	 * ロビーを検索するメソッド
+	 * @param lobbyID ロビーID
+	 * @return Lobby　ロビーのインスタンス
+	 */
 	private Lobby searchLobby(String lobbyID)
 	{
 		String id;
@@ -567,7 +583,10 @@ class ClientManageServer implements Runnable
 
 		return null;
 	}
-
+	/**
+	 * ロビーを削除するメソッド
+	 * @param targetLobby ロビーのインスタンス
+	 */
 	private void deleteLobby(Lobby targetLobby)
 	{
 		for(int num = 0; num < this.lobbys.size(); num++)
@@ -579,7 +598,11 @@ class ClientManageServer implements Runnable
 			}
 		}
 	}
-
+	/**
+	 * セッションからユーザを検索するメソッド
+	 * @param sessionID セッションID
+	 * @return userName　ユーザ名
+	 */
 	private String searchSessionUserID(String sessionID)
 	{
 		String userSesID;
@@ -591,7 +614,6 @@ class ClientManageServer implements Runnable
 				return user.getName();
 			}
 		}
-
 		return null;
 	}
 }

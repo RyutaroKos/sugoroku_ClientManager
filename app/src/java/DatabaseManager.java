@@ -58,7 +58,7 @@ class DatabaseManager
 
 	/**引数のID,パスワードに該当するユーザがいるかどうかを返す
 	 * @author 福嶋大智
-	 * @params id ユーザID, pwd パスワード
+	 * @param id ユーザID, pwd パスワード
 	 */
 	public boolean searchUser(String id, String pwd)
 	{
@@ -84,7 +84,7 @@ class DatabaseManager
 
 	/**IDに対応するユーザのパスワードを返す
 	 * @author 福嶋大智
-	 * @params id ユーザID
+	 * @param id ユーザID
 	 */
 	private String getPassword(String id)
 	{
