@@ -420,6 +420,7 @@ class ClientManageServer implements Runnable
 	    }
 
 	    //ランダムロビー数上限に到達
+	    return null;
 	}
 
 	/**
