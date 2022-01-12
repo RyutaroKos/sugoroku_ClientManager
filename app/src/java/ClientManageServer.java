@@ -248,6 +248,7 @@ class ClientManageServer implements Runnable
         if(lobby == null)
         {
             lobby = new Lobby(lobbyID, false);
+            this.lobbys.add(lobby);
         }
         User user = this.searchUser(userID);
         user.setStatus(2);
@@ -364,14 +365,14 @@ class ClientManageServer implements Runnable
 
 		lobby.deleteUser(userID);
 
-		String chat = userID + "が退出しました。";
-		this.castChat("System", lobbyID, chat);
-
 		if(lobby.getTotalUserNum() == 0)
 		{
 			this.deleteLobby(lobby);
 			return true;
 		}
+
+		String chat = userID + "が退出しました。";
+		this.castChat("System", lobbyID, chat);
 
 		JSONObject jsonObj = new JSONObject();
 		Session session;
@@ -416,7 +417,9 @@ class ClientManageServer implements Runnable
 
 	    	if(lobby == null)
 	    	{
-	    		return new Lobby(randLobbyID, true);
+	    		lobby = new Lobby(randLobbyID, true);
+	    		this.lobbys.add(lobby);
+	    		return lobby;
 	    	}
 	    	else
 	    	{
@@ -571,12 +574,12 @@ class ClientManageServer implements Runnable
 	private Lobby searchLobby(String lobbyID)
 	{
 		String id;
-		for(int num = 0; num < this.lobbys.size(); num++)
+		for(Lobby lobby : this.lobbys)
 		{
-			id = this.lobbys.get(num).getLobbyID();
+			id = lobby.getLobbyID();
 			if(lobbyID.equals(id))
 			{
-				return this.lobbys.get(num);
+				return lobby;
 			}
 		}
 
