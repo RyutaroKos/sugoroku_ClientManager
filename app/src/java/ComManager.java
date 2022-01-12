@@ -2,7 +2,8 @@
 EndPointSample.java
 サーバー起動後の動作を記述する
  */
-//package server;
+package cms;
+
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,5 +1,5 @@
 //メッセージの内容とセッション情報をペアで保存するためのクラス
-//package server;
+package cms;
 
 import javax.websocket.Session;
 

@@ -9,6 +9,7 @@
  #define inPrivate 2
  #define inGame 3
  //
+ package cms;
 
  import javax.websocket.Session;
 

@@ -1,4 +1,5 @@
-//package cms;
+package cms;
+
 import org.glassfish.tyrus.server.Server;
 
 public class Main {
@@ -18,6 +19,7 @@ public class Main {
 		{
 			trd.start();
 			server.start();
+			System.in.read();
 		}
 		catch(Exception e)
 		{
