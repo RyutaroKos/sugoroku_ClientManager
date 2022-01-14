@@ -15,6 +15,7 @@ class ClientManageServer implements Runnable
 	private DatabaseManager dbManager;
 
 	private static final String LOGIN = "LOGIN";
+	private static final String LOGOUT = "LOGOUT";
 	private static final String SIGNUP = "SIGNUP";
 	private static final String RAND_MATCH = "RANDOM_MATCH";
 	private static final String PRI_MATCH = "PRIVATE_MATCH";
@@ -90,6 +91,9 @@ class ClientManageServer implements Runnable
 					userID = jsonObj.getString("Username");
 					pwd = jsonObj.getString("Password");
 					this.signIn(userID, pwd, session);
+					break;
+				case LOGOUT:
+					this.signOut(userID);
 					break;
 				case SIGNUP:
 					userID = jsonObj.getString("Username");

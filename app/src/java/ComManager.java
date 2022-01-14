@@ -17,6 +17,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.json.JSONObject;
+
 // エンドポイントは適宜変更する
 @ServerEndpoint("/sample")
 public class ComManager {
@@ -45,8 +47,16 @@ public class ComManager {
 
     @OnClose
     public void onClose(Session session) {
-        System.out.println("[WebSocketServerSample] onClose:" + session.getId());
-    	Sessions.remove(session);
+        Sessions.remove(session);
+
+    	//ログアウト時の処理をするメッセージを追加
+    	JSONObject jso = new JSONObject();
+    	jso.put("Request", "LOGOUT");
+    	String msg = jso.toString();
+        System.out.println("[WebSocketServerSample] onClose from (session: " + session.getId() + ") msg: " + msg);
+    	Message closeMsg = new Message(msg,session);
+    	queue.add(closeMsg);
+    	cms.ntf();
     }
 
     @OnError
