@@ -37,7 +37,6 @@ class DatabaseManager
 			Class.forName(sqlDriverName);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			//System.exit(0);
 		}
 		this.connect();
 	}

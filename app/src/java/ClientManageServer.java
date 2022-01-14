@@ -44,7 +44,7 @@ class ClientManageServer implements Runnable
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 
