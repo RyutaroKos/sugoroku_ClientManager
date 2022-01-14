@@ -2,13 +2,6 @@
 
  import javax.websocket.Session;
 
-//user status
- #define outLobby 0
- #define inRandom 1
- #define inPrivate 2
- #define inGame 3
- //
-
 /**
  *ユーザのクラス
  *@author BP19025
