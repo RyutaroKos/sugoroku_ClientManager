@@ -18,7 +18,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 // エンドポイントは適宜変更する
-@ServerEndpoint("/test")
+@ServerEndpoint("/sample")
 public class ComManager {
 	private static ArrayList<Session> Sessions = new ArrayList<>();
 	static Queue<Message> queue = new ArrayDeque<>();
