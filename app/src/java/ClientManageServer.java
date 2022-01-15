@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import javax.websocket.Session;
 /**
- *クライアントを管理するクラス
- *@author fumofumo3
+ * クライアントを管理するクラス
+ * @author fumofumo3
  */
 class ClientManageServer implements Runnable
 {
@@ -55,8 +55,8 @@ class ClientManageServer implements Runnable
 	}
 
 	/**
-	 *WIP メッセージを処理して実行するメソッド
-	 *@author fumofumo3
+	 * メッセージを処理して実行するメソッド
+	 * @author fumofumo3
 	 */
 	synchronized public void handleMessage() throws Exception
 	{
@@ -439,7 +439,6 @@ class ClientManageServer implements Runnable
 	}
 
 	/**
-	 * WIP
 	 * ゲーム開始の準備を行うメソッド
 	 * @param userID ユーザID
 	 */
@@ -458,7 +457,6 @@ class ClientManageServer implements Runnable
 		}
 
 		JSONObject jsonObj = new JSONObject();
-		Session session;
 		String msg;
 
 		jsonObj.put("Request", MAKE_GAME);
@@ -476,7 +474,7 @@ class ClientManageServer implements Runnable
 
 		//メッセージ送信
     	msg = jsonObj.toString();
-		//アプリケーションサーバにどのように送信するのか
+		ComManager.sendToApp(msg);
 	}
 
 	/**
