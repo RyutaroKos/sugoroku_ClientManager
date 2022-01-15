@@ -27,6 +27,7 @@ public class ComManager {
 	private static ArrayList<Session> Sessions = new ArrayList<>();
 	static Queue<Message> queue = new ArrayDeque<>();
 	static ClientManageServer cms;
+	static Session appSes;
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig ec) {
