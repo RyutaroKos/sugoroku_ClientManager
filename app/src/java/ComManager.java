@@ -16,10 +16,12 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import javax.websocket.ClientEndpoint;
 
 import org.json.JSONObject;
 
 // エンドポイントは適宜変更する
+@ClientEndpoint
 @ServerEndpoint("/sample")
 public class ComManager {
 	private static ArrayList<Session> Sessions = new ArrayList<>();
@@ -89,5 +91,15 @@ public class ComManager {
 	public static void setCMS(ClientManageServer clientManSer)
 	{
 		cms = clientManSer;
+	}
+
+	public static void setSession(Session session)
+	{
+		appSes = session;
+	}
+
+	public static void sendToApp(String msg)
+	{
+		ComManager.sendMessage(appSes, msg);
 	}
 }
